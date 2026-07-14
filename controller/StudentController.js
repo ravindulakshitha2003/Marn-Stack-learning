@@ -13,7 +13,7 @@ export async  function CreateStudent(req,res) {
     password : "123456"
 
 })
-
+// duhfoush
 
     try{
              await ravindu.save();
