@@ -1,6 +1,9 @@
 import Student from "../models/Student.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 
 export async  function CreateStudent(req,res) {
@@ -56,7 +59,7 @@ export async function login(req,res) {
                 sid: user.sid
             }
 
-            const token = jwt.sign(paylord,"ravindu123456",{
+            const token = jwt.sign(paylord,process.env.SECREATE_KEY,{
                 expiresIn : "48h"
             })
 
