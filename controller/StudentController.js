@@ -1,26 +1,93 @@
 import Student from "../models/Student.js";
-
-
-
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
 
 
 export async  function CreateStudent(req,res) {
 
-    let ravindu = new Student({
-    StudentID :req.body.name,
-    age : req.body.age,
-    name :"SC-"+req.body.name,
-    password : "123456"
-
-})
-// duhfoush
 
     try{
-             await ravindu.save();
-             res.send("successfull");
+       
+
+        let newUser = new Student({
+            StudentID :req.body.sid,
+            age : req.body.age,
+            name :req.body.name,
+            password : bcrypt.hashSync(req.body.password,10)
+        })
+
+        await newUser.save();
+            res.send(
+                {
+                     message : "User Created Successfully"
+                }
+            );
+             console.log(3);
     }catch(error){
-        res.send(error);
+       res.json(
+            {
+                message : "Error creating user"
+            }
+        )
     }
     
 }
+
+
+export async function login(req,res) {
+    try {
+        const user = await Student.findOne({
+            StudentID:req.body.sid
+        });
+
+        if(user == null ){
+            res.send(
+                {
+                    message:"user not found"
+                }
+            )
+        }else{
+
+            const iscorrectpassword = bcrypt.compareSync(req.body.password,user.password);
+           if(iscorrectpassword){
+            let  paylord = {
+                name : user.name,
+                age : user.age,
+                sid: user.sid
+            }
+
+            const token = jwt.sign(paylord,"ravindu123456",{
+                expiresIn : "48h"
+            })
+
+            res.json(
+                {
+                    token : token,
+                    
+                }
+            )
+
+           }else{
+            res.status(401).send(
+                {
+                    message : "invalid token"
+                }
+            )
+           }           
+        }
+
+
+
+
+    } catch (error) {
+         res.status(500).send(
+                {
+                    message:"Server found"
+                }
+            )
+         console.log(error);
+    }
+}
+
+
 
