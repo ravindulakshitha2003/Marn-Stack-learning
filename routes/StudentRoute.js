@@ -8,4 +8,5 @@ const StudentRoute = express();
 StudentRoute.post("/create",CreateStudent);
 
 
+
 export default StudentRoute;

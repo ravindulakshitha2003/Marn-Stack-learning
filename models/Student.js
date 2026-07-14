@@ -25,6 +25,10 @@ const StudentSchema = new mongoose.Schema({
              "/images/default-product-01.png",
             "/images/default-product-02.png",
         ]
+    },
+    password :{
+        type : String,
+        required : true
     }
     
 

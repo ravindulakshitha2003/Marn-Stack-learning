@@ -1,15 +1,20 @@
 import Student from "../models/Student.js";
 
-let ravindu = new Student({
-    StudentID :"sc-1234556"+ new Date(2023, 9, 15),
-    age : 10,
-    name :"RAVINDU"
 
-})
 
 
 
 export async  function CreateStudent(req,res) {
+
+    let ravindu = new Student({
+    StudentID :req.body.name,
+    age : req.body.age,
+    name :"SC-"+req.body.name,
+    password : "123456"
+
+})
+
+
     try{
              await ravindu.save();
              res.send("successfull");
@@ -18,3 +23,4 @@ export async  function CreateStudent(req,res) {
     }
     
 }
+
